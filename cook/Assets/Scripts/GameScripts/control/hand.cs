@@ -17,6 +17,7 @@ public class hand : MonoBehaviour
     public GameObject pan;
     private GameObject pickObject = null;
 
+    public int testHand;
     private bool controlEnable = false;
     private bool inCheckArea = false;
     private int angle;
@@ -33,8 +34,8 @@ public class hand : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!controlEnable)
-            return;
+        /*if (!controlEnable)
+            return;*/
       //  Debug.Log("mPose.transform.eulerAngles:"+ mPose.transform.eulerAngles);
       //  Debug.Log("pan.transform.eulerAngles:" + pan.transform.eulerAngles.x);
         CheckRotation();
@@ -86,8 +87,20 @@ public class hand : MonoBehaviour
         if (mCurrentInteractable.mActiveHand)
             mCurrentInteractable.mActiveHand.Drop();
 
-        mCurrentInteractable.transform.position =new Vector3(transform.position.x - 0.2f, transform.position.y-0.2f, transform.position.z);
-        mCurrentInteractable.transform.eulerAngles = new Vector3(transform.rotation.x , 0 , -90);
+        //mCurrentInteractable.transform.position =new Vector3(transform.position.x - 0.2f, transform.position.y-0.2f, transform.position.z);
+        //mCurrentInteractable.transform.eulerAngles = new Vector3(transform.rotation.x , 0 , -90);
+
+        if (testHand == 0)
+        {
+            mCurrentInteractable.transform.position = new Vector3(transform.position.x - 0.1f, transform.position.y - 0.1f, transform.position.z);
+            mCurrentInteractable.transform.eulerAngles = new Vector3(transform.rotation.x - 90, 0, -90);
+        }
+        else if (testHand == 1)
+        {
+            mCurrentInteractable.transform.position = new Vector3(transform.position.x - 0.1f, transform.position.y - 0.1f, transform.position.z);
+            mCurrentInteractable.transform.eulerAngles = new Vector3(0, 0, 0);
+        }
+
         Rigidbody targetBody = mCurrentInteractable.GetComponent<Rigidbody>();
         mJoint.connectedBody = targetBody;
 

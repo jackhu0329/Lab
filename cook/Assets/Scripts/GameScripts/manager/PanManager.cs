@@ -15,7 +15,7 @@ public class PanManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (transform.GetChild(0).transform.eulerAngles.x > 280)
+        if (transform.GetChild(0).transform.eulerAngles.x > 300)
         {
             if (inDishArea)
             {
