@@ -16,9 +16,8 @@ public class hand : MonoBehaviour
 
     public GameObject pan;
     private GameObject pickObject = null;
-    //public GameObject dish;
-    private Vector3 originPosition = new Vector3(0, 0, 0);
-    private Quaternion originRotation = new Quaternion(0, 0, 0, 0);
+
+    private bool controlEnable = false;
     private bool inCheckArea = false;
     private int angle;
     // Start is called before the first frame update
@@ -34,6 +33,8 @@ public class hand : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (!controlEnable)
+            return;
       //  Debug.Log("mPose.transform.eulerAngles:"+ mPose.transform.eulerAngles);
       //  Debug.Log("pan.transform.eulerAngles:" + pan.transform.eulerAngles.x);
         CheckRotation();
@@ -144,6 +145,10 @@ public class hand : MonoBehaviour
         return nearest;
     }
 
+    public void ControlEnable()
+    {
+        controlEnable = true;
+    }
     private void CheckRotation()
     {
         // if(mCurrentInteractable.gameObject.name == "panObject")

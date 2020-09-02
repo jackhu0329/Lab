@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using GameData;
 using LabData;
+using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -12,7 +13,8 @@ public class MainUI : MonoBehaviour
     public Button startButton;
     public Button settingButton;
     public Button settingFinishButton;
-    public Dropdown hand,angle,dish;
+    public Button deleteButton;
+    public Dropdown hand,angle,dish,choose;
     public InputField scriptName;
 
     public void Start()
@@ -23,15 +25,19 @@ public class MainUI : MonoBehaviour
         startButton.onClick.AddListener(StartButtonClick);
         settingButton.onClick.AddListener(SettingButtonClick);
         settingFinishButton.onClick.AddListener(SettingFinishButtonClick);
+        deleteButton.onClick.AddListener(DeleteScripts);
+        UpdateList();
     }
 
     public void StartButtonClick()
     {
-        GameFlowData gameFlow = new GameFlowData();
+        MyGameData data = LabTools.GetData<MyGameData>(choose.captionText.text);
+        //GameFlowData gameFlow = new GameFlowData();
+        Debug.Log(data.angle);
+        //GameDataManager.FlowData = gameFlow;
+        GameDataManager.FlowData = new GameFlowData("01", data);
 
-        GameDataManager.FlowData = gameFlow;
-
-        var Id = gameFlow.UserId;
+        //var Id = gameFlow.UserId;
 
         //GameDataManager.LabDataManager.LabDataCollectInit(() => Id);
         GameSceneManager.Instance.Change2MainScene();
@@ -41,7 +47,7 @@ public class MainUI : MonoBehaviour
     {
         launcher.SetActive(false);
         editor.SetActive(true);
-
+        
     }
 
     public void SettingFinishButtonClick()
@@ -63,49 +69,69 @@ public class MainUI : MonoBehaviour
         Debug.Log("dropdown data:" + gameData.dishCount);
         launcher.SetActive(true);
         editor.SetActive(false);
+        UpdateList();
     }
 
     private void SetData(MyGameData data)
     {
-        if(hand.value == 0)
+        switch (hand.value)
         {
-            data.hand = "right";
-        }
-        else if (hand.value ==1)
-        {
-            data.hand = "left";
-        }
-
-        if(angle.value == 0)
-        {
-            data.angle = 10;
-        }
-        else if (angle.value == 1)
-        {
-            data.angle = 30;
-        }
-        else if (angle.value == 2)
-        {
-            data.angle = 90;
-        }
-        else if (angle.value == 3)
-        {
-            data.angle = 180;
+            case 0:
+                data.hand = "right";
+                break;
+            case 1:
+                data.hand = "left";
+                break;
         }
 
-        if (dish.value == 0)
+        switch (angle.value)
         {
-            data.dishCount = 5;
+            case 0:
+                data.angle = 10;
+                break;
+            case 1:
+                data.angle = 30;
+                break;
+            case 2:
+                data.angle = 90;
+                break;
+            case 3:
+                data.angle = 180;
+                break;
+        
         }
-        else if (dish.value == 1)
+
+        switch (dish.value)
         {
-            data.dishCount = 10;
+            case 0:
+                data.dishCount = 5;
+                break;
+            case 1:
+                data.dishCount = 10;
+                break;
+            case 2:
+                data.dishCount = 15;
+                break;
         }
-        else if (dish.value == 2)
-        {
-            data.dishCount = 15;
-        }
+
+
     }
 
-    
+    private void UpdateList()
+    {
+        choose.ClearOptions();
+        if (LabTools.GetDataName<MyGameData>() != null)
+        {
+            choose.AddOptions(LabTools.GetDataName<MyGameData>());
+        }
+        choose.value = 0;
+    }
+
+    public void DeleteScripts()
+    {
+        LabTools.DeleteData<MyGameData>(choose.captionText.text);
+        UpdateList();
+    }
+
+
 }

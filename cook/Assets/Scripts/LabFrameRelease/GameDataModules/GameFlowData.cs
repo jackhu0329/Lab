@@ -2,8 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DataSync;
-
-
+using LabData;
 
 namespace GameData
 {
@@ -14,13 +13,12 @@ namespace GameData
         /// </summary>
         public Language Language { get; set; }
 
+        public MyGameData GameData = new MyGameData();
         /// <summary>
         /// 用户ID
         /// </summary>
         public string UserId { get; set; } = "Test01";
-        public string hand { get; set; } = "right";
-        public int angle { get; set; } = 10;
-        public int dishCount { get; set; } = 5;
+
 
 
         /// <summary>
@@ -30,9 +28,10 @@ namespace GameData
         /// <param name="languageType"></param>
         /// <param name="remindType"></param>
         /// <param name="gameData"></param>
-        public GameFlowData(string UserID, Language languageType)
+        public GameFlowData(string UserID, MyGameData data)
         {
-            Language = languageType;
+            //Language = languageType;
+            GameData = data;
             UserId = UserID;
         }
 

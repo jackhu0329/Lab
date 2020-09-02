@@ -1,17 +1,17 @@
-﻿using LabData;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using LabData;
 
-public class GamaManager : MonoBehaviour
+public class ScoreManager : MonoBehaviour
 {
+    public static int score = 0;
+    private MyGameData data = new MyGameData();
+
     // Start is called before the first frame update
-    public int score = 0;
-    private MyGameData data = new MyGameData(); 
     void Start()
     {
-        
-        Debug.Log("test data:"+data.hand);
+        Debug.Log("test data:" + data.hand);
         GameEventCenter.AddEvent("GameInit", GameInit);
         GameEventCenter.AddEvent("ScoreGet", ScoreGet);
     }
@@ -19,11 +19,7 @@ public class GamaManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.W))
-        {
-            Debug.Log("test0");
-            GameEventCenter.DispatchEvent("ScoreInit");
-        }
+        
     }
 
     public void GameInit()
@@ -37,6 +33,6 @@ public class GamaManager : MonoBehaviour
     {
         Debug.Log("test2");
         score++;
-        Debug.Log("test2:"+score);
+        Debug.Log("test2:" + score);
     }
 }
