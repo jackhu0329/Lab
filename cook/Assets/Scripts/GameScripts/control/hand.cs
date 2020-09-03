@@ -36,8 +36,37 @@ public class hand : MonoBehaviour
     {
         /*if (!controlEnable)
             return;*/
-      //  Debug.Log("mPose.transform.eulerAngles:"+ mPose.transform.eulerAngles);
-      //  Debug.Log("pan.transform.eulerAngles:" + pan.transform.eulerAngles.x);
+        //  Debug.Log("mPose.transform.eulerAngles:"+ mPose.transform.eulerAngles);
+        //  Debug.Log("pan.transform.eulerAngles:" + pan.transform.eulerAngles.x);
+        if (!Correction.hasCorrection)
+        {
+            float timeStart =0f;
+            bool timerUse = false;
+            if (mGrabAction.GetStateDown(mPose.inputSource))
+            {
+                if (!timerUse)
+                {
+                    timeStart = Mathf.FloorToInt(Time.time);
+                    timerUse = true;
+                }
+                if (Mathf.FloorToInt(Time.time) > timeStart)
+                {
+                    Correction.handHeight = transform.position.y;
+                    Correction.doCorrection = true;
+                }
+            }
+            if (mGrabAction.GetStateUp(mPose.inputSource))
+            {
+                timerUse = false;
+
+            }
+
+            return;
+        }
+
+
+
+
         CheckRotation();
         if (mGrabAction.GetStateDown(mPose.inputSource))
         {
@@ -122,15 +151,15 @@ public class hand : MonoBehaviour
 
         /*mCurrentInteractable.transform.position = originPosition;
         mCurrentInteractable.transform.rotation = originRotation;*/
-        if(pickObject.name == "panObject(Clone)")
+        if(mCurrentInteractable.gameObject.name == "panObject(Clone)")
         {
             GameEventCenter.DispatchEvent("SpawnPan");
         }
-        else if (pickObject.name == "dishObject(Clone)")
+        else if (mCurrentInteractable.gameObject.name == "dishObject(Clone)")
         {
             GameEventCenter.DispatchEvent("SpawnDish");
         }
-        Destroy(pickObject);
+        Destroy(mCurrentInteractable.gameObject);
         GameEventCenter.DispatchEvent("InitStatus");
         /*Rigidbody targetBody = mCurrentInteractable.GetComponent<Rigidbody>();
         targetBody.velocity = mPose.GetVelocity();
