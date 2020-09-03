@@ -48,6 +48,10 @@ public class hand : MonoBehaviour
         {
             Debug.Log(mPose.inputSource + " up ");
             Drop();
+            if (ScoreManager.gameStatus == 5)
+            {
+                GameEventCenter.DispatchEvent("InitStatus");
+            }
 
         }
     }
@@ -90,15 +94,19 @@ public class hand : MonoBehaviour
         //mCurrentInteractable.transform.position =new Vector3(transform.position.x - 0.2f, transform.position.y-0.2f, transform.position.z);
         //mCurrentInteractable.transform.eulerAngles = new Vector3(transform.rotation.x , 0 , -90);
 
-        if (testHand == 0)
+        
+
+        if (mCurrentInteractable.gameObject.name == "panObject(Clone)")
         {
             mCurrentInteractable.transform.position = new Vector3(transform.position.x - 0.1f, transform.position.y - 0.1f, transform.position.z);
             mCurrentInteractable.transform.eulerAngles = new Vector3(transform.rotation.x - 90, 0, -90);
+            PickUpStatusControl(mCurrentInteractable);
         }
-        else if (testHand == 1)
+        else if (mCurrentInteractable.gameObject.name == "dishObject(Clone)")
         {
             mCurrentInteractable.transform.position = new Vector3(transform.position.x - 0.1f, transform.position.y - 0.1f, transform.position.z);
             mCurrentInteractable.transform.eulerAngles = new Vector3(0, 0, 0);
+            PickUpStatusControl(mCurrentInteractable);
         }
 
         Rigidbody targetBody = mCurrentInteractable.GetComponent<Rigidbody>();
@@ -123,6 +131,7 @@ public class hand : MonoBehaviour
             GameEventCenter.DispatchEvent("SpawnDish");
         }
         Destroy(pickObject);
+        GameEventCenter.DispatchEvent("InitStatus");
         /*Rigidbody targetBody = mCurrentInteractable.GetComponent<Rigidbody>();
         targetBody.velocity = mPose.GetVelocity();
         targetBody.angularVelocity = mPose.GetAngularVelocity();*/
@@ -174,5 +183,17 @@ public class hand : MonoBehaviour
         {
             Debug.Log("");
         }*/
+    }
+
+    private void PickUpStatusControl(Interactable interactable)
+    {
+        if (ScoreManager.gameStatus == 0 && interactable.gameObject.name == "panObject(Clone)")
+        {
+            GameEventCenter.DispatchEvent("NextStatus");
+        }
+        else if (ScoreManager.gameStatus == 1 && interactable.gameObject.name == "dishObject(Clone)")
+        {
+            GameEventCenter.DispatchEvent("NextStatus");
+        }
     }
 }

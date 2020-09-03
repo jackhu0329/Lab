@@ -47,9 +47,16 @@ public class DishManager : MonoBehaviour
         Debug.Log("SuccessMotion");
         transform.GetChild(1).gameObject.SetActive(false);
         GameEventCenter.DispatchEvent("ScoreGet");
-        GameEventCenter.DispatchEvent("SpawnDish");
+
+
+        if (ScoreManager.gameStatus == 4)
+        {
+            GameEventCenter.DispatchEvent("NextStatus");
+        }
+
+        /*GameEventCenter.DispatchEvent("SpawnDish");
         
-        Destroy(transform.gameObject);
+        Destroy(transform.gameObject);*/
 
     }
 }

@@ -6,6 +6,7 @@ using LabData;
 public class ScoreManager : MonoBehaviour
 {
     public static int score = 0;
+    public static int gameStatus = 0;
     private MyGameData data = new MyGameData();
 
     // Start is called before the first frame update
@@ -14,6 +15,9 @@ public class ScoreManager : MonoBehaviour
         Debug.Log("test data:" + data.hand);
         GameEventCenter.AddEvent("GameInit", GameInit);
         GameEventCenter.AddEvent("ScoreGet", ScoreGet);
+        GameEventCenter.AddEvent("InitStatus", InitStatus);
+        GameEventCenter.AddEvent("NextStatus", NextStatus);
+        GameEventCenter.AddEvent("RedoStatus", RedoStatus); 
     }
 
     // Update is called once per frame
@@ -34,5 +38,20 @@ public class ScoreManager : MonoBehaviour
         Debug.Log("test2");
         score++;
         Debug.Log("test2:" + score);
+    }
+
+    public void InitStatus()
+    {
+        gameStatus = 0;
+    }
+
+    public void NextStatus()
+    {
+        gameStatus++;
+    }
+
+    public void RedoStatus()
+    {
+        gameStatus--;
     }
 }
