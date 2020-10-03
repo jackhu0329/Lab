@@ -9,10 +9,12 @@ public class GameUI : MonoBehaviour
     
     private float timeStart = 0f;
     private float timeEnd = 0f;
-    
+    private float timer = 0f;
+    private bool timerStatus = false;
+
     private int goalScore = 0;
     public Text hand, dish, angle, time;
-    void Start()
+    void Awake()
     {
         transform.GetComponent<Canvas>().transform.GetChild(0).gameObject.SetActive(false);
         goalScore = GameDataManager.FlowData.GameData.dishCount;
@@ -28,6 +30,8 @@ public class GameUI : MonoBehaviour
         angle.text = "角度:"+ GameDataManager.FlowData.GameData.angle;
         dish.text = "盤數:"+ GameDataManager.FlowData.GameData.dishCount;
 
+        GameEventCenter.AddEvent("TimerStart", TimerStart);
+        GameEventCenter.AddEvent("TimerStop", TimerStop);
         // timeStart = Mathf.FloorToInt(Time.time);
 
     }
@@ -37,6 +41,10 @@ public class GameUI : MonoBehaviour
     {
         //Debug.Log("XXXX");
         //if (ScoreManager.score == goalScore)
+        if (timerStatus)
+            timer += Time.deltaTime;
+
+
         if (Input.GetKeyDown(KeyCode.X))
         {
             Debug.Log("QQQQQ");
@@ -48,13 +56,14 @@ public class GameUI : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.W))
         {
-            ScoreManager.gameStatus++;
+            GameEventCenter.DispatchEvent("TimerStart");
+            //ScoreManager.gameStatus++;
         }
 
         if (Input.GetKeyDown(KeyCode.Q))
         {
             //timeEnd = Mathf.FloorToInt(Time.time);
-
+            GameEventCenter.DispatchEvent("TimerStop");
             Debug.Log("timer:" + timeEnd);
         }
     }
@@ -118,5 +127,18 @@ public class GameUI : MonoBehaviour
             , gameUI);
         }
 
+    }
+
+    public void TimerStart()
+    {
+        timerStatus = true;
+        return;
+    }
+
+    public void TimerStop()
+    {
+        timerStatus = false;
+        timer = 0f;
+        return;
     }
 }

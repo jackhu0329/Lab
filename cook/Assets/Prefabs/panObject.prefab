@@ -170,6 +170,7 @@ GameObject:
   - component: {fileID: 2046522377766106065}
   - component: {fileID: 6334820726407024299}
   - component: {fileID: 7256454983183296504}
+  - component: {fileID: 4997893004403656751}
   m_Layer: 0
   m_Name: panObject
   m_TagString: Interactable
@@ -247,3 +248,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   mActiveHand: {fileID: 0}
+--- !u!114 &4997893004403656751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2046522377766106095}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08775735247d4e44db8dceed04449132, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Describe: 
