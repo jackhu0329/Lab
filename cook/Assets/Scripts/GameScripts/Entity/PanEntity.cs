@@ -27,13 +27,22 @@ namespace GameFrame
 
         public void OnTriggerEnter(Collider other)
         {
-            targetObj = other.gameObject;
+            GameEventCenter.DispatchEvent("MotionSuccess", 3);
+            if (other.name == "dishObject(Clone)")
+            {
+                targetObj = other.gameObject;
+            }
+                
             time = 0.0f;
         }
 
         public void OnTriggerExit(Collider other)
         {
-            targetObj = null;
+            if (other.name == "dishObject(Clone)")
+            {
+                targetObj = null;
+            }
+            
             time = 0.0f;
         }
 
@@ -42,40 +51,22 @@ namespace GameFrame
             if (other.name != "dishObject(Clone)")
                 return;
 
-            GameEventCenter.DispatchEvent("MotionSuccess", 3);
+            
             if (other.name == "dishObject(Clone)")
             {
                 if (transform.GetChild(0).transform.eulerAngles.x > 270 + GameDataManager.FlowData.GameData.angle)
                 {
                     EggPass();
-                    //Debug.Log("PAN MANAGER!!");
+                    Debug.Log("pan rotation:"+ transform.GetChild(0).transform.eulerAngles.x);
                 }
             }
 
-
-
-
-            //time += Time.deltaTime;
-            /*if (other.gameObject.CompareTag("Cabinet_Cup"))
-                time += Time.deltaTime;
-
-            if (time >= GameDataManager.FlowData.InduceTimeCost)
-            {
-                other.GetComponent<Renderer>().material = gameObject.GetComponent<Renderer>().material;
-                other.gameObject.tag = "Untagged";
-                GameEventCenter.DispatchEvent("ResetHandGrab");
-                Destroy(this.gameObject);
-                GameEventCenter.DispatchEvent("SpawnCup");
-                GameEventCenter.DispatchEvent("AddScore");
-                time = 0;
-                GameEventCenter.DispatchEvent<AudioSelect>("AudioPlay", AudioSelect.PlaceCup);
-            }*/
         }
 
         private void EggPass()
         {
 
-
+            Debug.Log("pan p1:");
             posStart = transform.GetChild(1).position;
             posEnd = targetObj.transform.GetChild(1).position;
 
@@ -97,12 +88,13 @@ namespace GameFrame
             transform.GetChild(1).position = v1 + f2 * Vector3.up;
             if (jumpTimer >= jumpTime)
             {
-
+                GameEventCenter.DispatchEvent("MotionSuccess", 4);
+                Debug.Log("pan p2:");
                 jumpTimer = 0;
                 jumpInit = false;
                 transform.GetChild(1).gameObject.SetActive(false);
                 targetObj.transform.GetChild(1).gameObject.SetActive(true);
-                GameEventCenter.DispatchEvent("MotionSuccess", 4);
+                
             }
         }
     }

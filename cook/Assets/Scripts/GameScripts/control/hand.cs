@@ -90,7 +90,7 @@ public class hand : MonoBehaviour
         
         if (!other.gameObject.CompareTag("Interactable"))
         {
-            Debug.Log("OnTriggerEnter 1 ");
+            Debug.Log("1003 1 ");
             return;
         }
         pickObject = other.gameObject;
@@ -113,7 +113,7 @@ public class hand : MonoBehaviour
     private void Pickup()
     {
         mCurrentInteractable = GetNearestInteractable();
-
+        Debug.Log("1003 2 ");
         if (!mCurrentInteractable)
             return;
 
@@ -183,6 +183,7 @@ public class hand : MonoBehaviour
 
             if (distance < minDistance && distance < 0.1f && interactive.tag == ("Interactable"))//手把真的有碰到物體 且物體還是可以動的狀態
             {
+                Debug.Log("1003 1 ");
                 minDistance = distance;
                 nearest = interactive;
 
@@ -207,7 +208,7 @@ public class hand : MonoBehaviour
         {
             GameEventCenter.DispatchEvent("MotionSuccess", 1);
         }
-        else if (&& interactable.gameObject.name == "dishObject(Clone)")
+        else if ( interactable.gameObject.name == "dishObject(Clone)")
         {
             GameEventCenter.DispatchEvent("MotionSuccess", 2);
         }
