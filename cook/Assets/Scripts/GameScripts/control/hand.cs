@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Valve.VR;
+using HTC.UnityPlugin.Vive;
 using Valve.VR.InteractionSystem;
 
 public class hand : MonoBehaviour
@@ -21,12 +22,11 @@ public class hand : MonoBehaviour
     private bool controlEnable = false;
     private bool inCheckArea = false;
     private int angle;
+    private float timer = 0f;
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log(" INIT ");
-        //originPosition = pan.transform.position;
-       // originRotation = pan.transform.rotation;
+
         mPose = GetComponent<SteamVR_Behaviour_Pose>();
         mJoint = GetComponent<FixedJoint>();
     }
@@ -40,34 +40,34 @@ public class hand : MonoBehaviour
         //  Debug.Log("pan.transform.eulerAngles:" + pan.transform.eulerAngles.x);
         if (!Correction.hasCorrection)
         {
-            float timeStart =0f;
-            bool timerUse = false;
-            if (mGrabAction.GetStateDown(mPose.inputSource))
+
+            if (ViveInput.GetPress(HandRole.RightHand, ControllerButton.Menu))
             {
-                if (!timerUse)
+                timer += Time.deltaTime;
+                if (timer >= 3.0f )
                 {
-                    timeStart = Mathf.FloorToInt(Time.time);
-                    timerUse = true;
-                }
-                if (Mathf.FloorToInt(Time.time) > timeStart)
-                {
-                    Correction.handHeight = transform.position.y;
-                    Correction.doCorrection = true;
+                    //GameEntityManager.Instance.GetCurrentSceneRes<MainSceneRes>().mainSceneUI.SetUIActive(0, false);
+                    //GameEventCenter.DispatchEvent<Vector3>(EventName.EnableCameraRig, this.transform.position);
+                    GameEventCenter.DispatchEvent("CameraCorrection",transform.position);
+                    Correction.hasCorrection = true;
                 }
             }
-            if (mGrabAction.GetStateUp(mPose.inputSource))
-            {
-                timerUse = false;
 
+            if (ViveInput.GetPress(HandRole.LeftHand, ControllerButton.Menu))
+            {
+                timer += Time.deltaTime;
+                if (timer >= 3.0f)
+                {
+                    //GameEntityManager.Instance.GetCurrentSceneRes<MainSceneRes>().mainSceneUI.SetUIActive(0, false);
+                    //GameEventCenter.DispatchEvent<Vector3>(EventName.EnableCameraRig, this.transform.position);
+                    Correction.hasCorrection = true;
+                }
             }
 
             return;
         }
 
 
-
-
-        CheckRotation();
         if (mGrabAction.GetStateDown(mPose.inputSource))
         {
             Debug.Log(mPose.inputSource + " down ");
@@ -94,7 +94,7 @@ public class hand : MonoBehaviour
             return;
         }
         pickObject = other.gameObject;
-       // Debug.Log("OnTriggerEnter 2 ");
+
         mContactInteractables.Add(other.gameObject.GetComponent<Interactable>());
 
     }
@@ -106,7 +106,7 @@ public class hand : MonoBehaviour
             return;
         }
         pickObject = null;
-      //  Debug.Log("OnTriggerExit  ");
+
         mContactInteractables.Remove(other.gameObject.GetComponent<Interactable>());
     }
 
@@ -159,13 +159,11 @@ public class hand : MonoBehaviour
         {
             GameEventCenter.DispatchEvent("SpawnDish");
         }
+        GameEventCenter.DispatchEvent("MotionSuccess", 0);
         Destroy(mCurrentInteractable.gameObject);
-        GameEventCenter.DispatchEvent("InitStatus");
-        /*Rigidbody targetBody = mCurrentInteractable.GetComponent<Rigidbody>();
-        targetBody.velocity = mPose.GetVelocity();
-        targetBody.angularVelocity = mPose.GetAngularVelocity();*/
+        mContactInteractables = new List<Interactable>();
+        //GameEventCenter.DispatchEvent("InitStatus");
 
-        //Destroy(mCurrentInteractable.transform.gameObject);//destroy the object after drop
         mJoint.connectedBody = null;
         mCurrentInteractable.mActiveHand = null;
         mCurrentInteractable = null;
@@ -200,29 +198,18 @@ public class hand : MonoBehaviour
     {
         controlEnable = true;
     }
-    private void CheckRotation()
-    {
-        // if(mCurrentInteractable.gameObject.name == "panObject")
-        // {
 
-            
-           // Debug.Log("CheckRotation get!!!");
-      //  }
-        /*if (transform.eulerAngles == angle)
-        {
-            Debug.Log("");
-        }*/
-    }
+
 
     private void PickUpStatusControl(Interactable interactable)
     {
-        if (ScoreManager.gameStatus == 0 && interactable.gameObject.name == "panObject(Clone)")
+        if (interactable.gameObject.name == "panObject(Clone)")
         {
-            GameEventCenter.DispatchEvent("NextStatus");
+            GameEventCenter.DispatchEvent("MotionSuccess", 1);
         }
-        else if (ScoreManager.gameStatus == 1 && interactable.gameObject.name == "dishObject(Clone)")
+        else if (&& interactable.gameObject.name == "dishObject(Clone)")
         {
-            GameEventCenter.DispatchEvent("NextStatus");
+            GameEventCenter.DispatchEvent("MotionSuccess", 2);
         }
     }
 }

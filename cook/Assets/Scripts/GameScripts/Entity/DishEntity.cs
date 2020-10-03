@@ -7,6 +7,7 @@ namespace GameFrame
     public class DishEntity : GameEntityBase
     {
 
+
         public override void EntityDispose()
         {
 
@@ -14,12 +15,16 @@ namespace GameFrame
 
         private void OnTriggerStay(Collider other)
         {
-
+            
             if (other.gameObject.name == "CheckArea")
             {
-                if (foodActive)
+                
+                if (transform.GetChild(1).gameObject.activeSelf)
                 {
-                    SuccessMotion();
+                    
+                    GameEventCenter.DispatchEvent("GetScore");
+                    transform.GetChild(1).gameObject.SetActive(false);
+                    GameEventCenter.DispatchEvent("MotionSuccess", 5);
                 }
 
             }

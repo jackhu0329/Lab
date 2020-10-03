@@ -11,22 +11,30 @@ public class Correction : MonoBehaviour
    private float originHeight = 0f;
     public GameObject camaraRig;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
         //correctionValue = transform.position.y;
         originHeight = transform.position.y;
+        GameEventCenter.AddEvent<Vector3>("CameraCorrection", CameraCorrection);
     }
 
     // Update is called once per frame
     void Update()
     {
         //Debug.Log("correction test");
-        if(doCorrection&& handHeight > 0)
+        /*if(doCorrection&& handHeight > 0)
         {
             correctionValue = handHeight - originHeight;
             //camaraRig.transform.position.y += correctionValue;
             camaraRig.transform.position=new Vector3(camaraRig.transform.position.x , camaraRig.transform.position.y+ correctionValue, camaraRig.transform.position.z);
             hasCorrection = true;
-        }
+        }*/
+    }
+
+    void CameraCorrection(Vector3 v)
+    {
+        correctionValue = v.y - originHeight;
+        camaraRig.transform.position = new Vector3(camaraRig.transform.position.x, camaraRig.transform.position.y + correctionValue, camaraRig.transform.position.z);
+        hasCorrection = true;
     }
 }

@@ -139,15 +139,12 @@ namespace GameFrame
 
         public void TimerStart()
         {
-            Debug.Log("TimerStart");
             timerStatus = true;
             return;
         }
 
         public void TimerStop()
         {
-            Debug.Log("TimerStop:"+ timer);
-            Debug.Log("TimerStop2:" + Mathf.FloorToInt(timer));
             time.text = "花費時間:" + Mathf.FloorToInt(timer);
             timerStatus = false;
             timer = 0f;

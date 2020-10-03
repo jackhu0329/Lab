@@ -15,6 +15,11 @@ namespace GameFrame
         public float jumpTime = 0.5f; // 起始點-終點的總時間
         private float jumpTimer;
         private bool jumpInit = true;
+
+        public void Awake()
+        {
+            transform.eulerAngles = new Vector3(-90, 0, -90);
+        }
         public override void EntityDispose()
         {
 
@@ -37,7 +42,7 @@ namespace GameFrame
             if (other.name != "dishObject(Clone)")
                 return;
 
-
+            GameEventCenter.DispatchEvent("MotionSuccess", 3);
             if (other.name == "dishObject(Clone)")
             {
                 if (transform.GetChild(0).transform.eulerAngles.x > 270 + GameDataManager.FlowData.GameData.angle)
@@ -97,8 +102,7 @@ namespace GameFrame
                 jumpInit = false;
                 transform.GetChild(1).gameObject.SetActive(false);
                 targetObj.transform.GetChild(1).gameObject.SetActive(true);
-
-
+                GameEventCenter.DispatchEvent("MotionSuccess", 4);
             }
         }
     }

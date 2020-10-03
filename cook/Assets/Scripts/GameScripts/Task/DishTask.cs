@@ -12,7 +12,6 @@ namespace GameFrame
         // Start is called before the first frame update
         public override IEnumerator TaskInit()
         {
-            Debug.Log("spawn pan 12345");
             spawnPoint = GameObject.Find("SpawnDish");
             dish = GameEntityManager.Instance.GetCurrentSceneRes<MainSceneRes>().Dish.gameObject;
             GameEventCenter.AddEvent("SpawnDish", SpawnDish);
