@@ -25,6 +25,7 @@ namespace GameFrame
                     GameEventCenter.DispatchEvent("GetScore");
                     transform.GetChild(1).gameObject.SetActive(false);
                     GameEventCenter.DispatchEvent("MotionSuccess", 5);
+                    GameEventCenter.DispatchEvent("PlayMusic");
                 }
 
             }

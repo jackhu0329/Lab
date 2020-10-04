@@ -8,7 +8,7 @@ namespace GameFrame
     {
         private GameObject pan;
         private GameObject spawnPoint;
-       
+        
         // Start is called before the first frame update
         public override IEnumerator TaskInit()
         {

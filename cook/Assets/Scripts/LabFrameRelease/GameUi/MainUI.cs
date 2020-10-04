@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using GameData;
 using LabData;
-using UnityEditorInternal;
+//using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -41,6 +41,7 @@ public class MainUI : MonoBehaviour
 
         //GameDataManager.LabDataManager.LabDataCollectInit(() => Id);
         GameSceneManager.Instance.Change2MainScene();
+        //Application.Quit();
     }
 
     public void SettingButtonClick()
