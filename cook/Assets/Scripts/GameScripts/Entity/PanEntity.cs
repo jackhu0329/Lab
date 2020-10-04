@@ -54,11 +54,24 @@ namespace GameFrame
             
             if (other.name == "dishObject(Clone)")
             {
-                if (transform.GetChild(0).transform.eulerAngles.x > 270 + GameDataManager.FlowData.GameData.angle)
+                Debug.Log("pan rotation:" + transform.GetChild(0).transform.eulerAngles.x);
+                if (GameDataManager.FlowData.GameData.angle >= 90)
                 {
-                    EggPass();
-                    Debug.Log("pan rotation:"+ transform.GetChild(0).transform.eulerAngles.x);
+                    if (transform.GetChild(0).transform.eulerAngles.x > -90 + GameDataManager.FlowData.GameData.angle&& transform.GetChild(0).transform.eulerAngles.x<240)
+                    {
+                        EggPass();
+                        Debug.Log("pan rotation:" + transform.GetChild(0).transform.eulerAngles.x);
+                    }
                 }
+                else
+                {
+                    if (transform.GetChild(0).transform.eulerAngles.x > 270 + GameDataManager.FlowData.GameData.angle)
+                    {
+                        EggPass();
+                        Debug.Log("pan rotation:" + transform.GetChild(0).transform.eulerAngles.x);
+                    }
+                }
+
             }
 
         }

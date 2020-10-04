@@ -44,7 +44,7 @@ public class hand : MonoBehaviour
             if (ViveInput.GetPress(HandRole.RightHand, ControllerButton.Menu))
             {
                 timer += Time.deltaTime;
-                if (timer >= 3.0f )
+                if (timer >= 2.0f )
                 {
                     //GameEntityManager.Instance.GetCurrentSceneRes<MainSceneRes>().mainSceneUI.SetUIActive(0, false);
                     //GameEventCenter.DispatchEvent<Vector3>(EventName.EnableCameraRig, this.transform.position);

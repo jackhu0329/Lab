@@ -18,6 +18,7 @@ namespace GameFrame
         private int test = 0;
         void Awake()
         {
+            gameStatus = -1;
             transform.GetComponent<Canvas>().transform.GetChild(0).gameObject.SetActive(false);
             //goalScore = GameDataManager.FlowData.GameData.dishCount;
             if (GameDataManager.FlowData.GameData.hand == "right")
@@ -53,7 +54,9 @@ namespace GameFrame
 
             if (score== GameDataManager.FlowData.GameData.dishCount)
             {
+                GameEventCenter.DispatchEvent("BGMFinish");
                 onGUI = false;
+                
                 transform.GetComponent<Canvas>().transform.GetChild(0).gameObject.SetActive(true);
             }
 
@@ -95,6 +98,13 @@ namespace GameFrame
             GUI.Label(new Rect(Screen.width / 10 * 1, (Screen.height / 6 * 5), 200, 100),
             "已完成" + score + "盤"
             , gameUI);
+
+            if (gameStatus == -1)
+            {
+                GUI.Label(new Rect(Screen.width / 10 * 3, (Screen.height / 6 * 1), 200, 100),
+                    "" + "手臂向前伸直並按住MENU鈕2秒進行校正"
+                    , gameUI);
+            }
 
 
             if (gameStatus == 0)
@@ -163,7 +173,8 @@ namespace GameFrame
 
         public void QuitButton()
         {
-            GameApplication.Instance.GameApplicationDispose();
+            //GameApplication.Instance.GameApplicationDispose();
+            Application.Quit();
         }
     }
 }
